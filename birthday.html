@@ -1,358 +1,704 @@
-<!-- birthday.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Happy Birthday Polu! 🎂✨</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Pacifico&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-    <!-- CSS Styles -->
     <style>
+        :root {
+            --bg-dark: #090d16;
+            --accent-pink: #ff2a85;
+            --accent-purple: #9d4edd;
+            --accent-gold: #ffb703;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #ffe6f0;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(255, 42, 133, 0.25) 0px, transparent 50%),
+                radial-gradient(at 90% 20%, rgba(157, 78, 221, 0.25) 0px, transparent 50%),
+                radial-gradient(at 50% 90%, rgba(255, 183, 3, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 50px;
-            font-family: 'Roboto', sans-serif;
-            text-align: center;
-            color: #333;
+            padding: 40px 20px 80px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        h1 {
-            font-family: 'Pacifico', cursive;
-            font-size: 4em;
-            color: #ff4081;
-            margin-bottom: 20px;
-            animation: fadeInDown 2s ease-in-out;
-        }
-        p.message {
-            font-size: 1.5em;
-            margin: 20px 0;
-            max-width: 600px;
-            animation: fadeInUp 2s ease-in-out;
-        }
-        .photos {
+
+        /* Floating music control button */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            animation: zoomIn 2s ease-in-out;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.3s ease;
         }
-        .photos img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        .photos img:hover {
+
+        .music-btn:hover {
+            background: rgba(255, 42, 133, 0.3);
+            border-color: var(--accent-pink);
             transform: scale(1.05);
         }
-        .gif {
-            margin: 30px 0;
-            animation: bounceIn 2s ease-in-out;
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
         }
-        .gif img {
-            width: 300px;
-            border-radius: 10px;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+
+        /* Hero Header */
+        .header-section {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+            animation: fadeInDown 1.2s ease-out;
         }
-        /* Balloon Animation */
-        .balloons {
+
+        .nickname-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255,42,133,0.2), rgba(157,78,221,0.2));
+            border: 1px solid rgba(255,42,133,0.4);
+            color: #ff75c3;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(255,42,133,0.2);
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.8rem;
+            background: linear-gradient(135deg, #ff75c3, #ffa647, #ffe57f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 5px 25px rgba(255,42,133,0.3);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-sub);
+            font-weight: 300;
+        }
+
+        /* Candle & Cake Card */
+        .interactive-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 40px 30px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            animation: fadeInUp 1.2s ease-out;
+            position: relative;
+        }
+
+        .cake-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 30px 0 20px 0;
+        }
+
+        .cake-img {
+            max-width: 250px;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .cake-wrapper:hover .cake-img {
+            transform: scale(1.03);
+        }
+
+        .candles-container {
             position: absolute;
-            top: -200px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 50px;
-            animation: floatBalloons 10s infinite;
+            gap: 25px;
+            z-index: 5;
         }
-        .balloon {
-            width: 100px;
-            height: 130px;
-            background-color: #ff8a80;
-            border-radius: 50% 50% 50% 50%;
+
+        .candle {
+            width: 8px;
+            height: 45px;
+            background: linear-gradient(to bottom, #ffb703, #ff4d6d);
+            border-radius: 4px;
             position: relative;
-            animation: sway 3s ease-in-out infinite alternate;
         }
-        .balloon::after {
+
+        .candle-flame {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 20px;
+            background: radial-gradient(circle, #fff 20%, #ffbe0b 60%, #ff006e 100%);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ffbe0b, 0 0 25px #ff006e;
+            animation: flameFlicker 0.15s infinite alternate;
+        }
+
+        @keyframes flameFlicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.15) rotate(2deg); opacity: 0.85; }
+        }
+
+        .blown-out .candle-flame {
+            display: none;
+        }
+
+        .smoke {
+            display: none;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 20px;
+            background: rgba(200, 200, 200, 0.6);
+            border-radius: 50%;
+            filter: blur(4px);
+        }
+
+        .blown-out .smoke {
+            display: block;
+            animation: smokeRise 1.5s ease-out forwards;
+        }
+
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-30px) scale(2.5); }
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+            color: #ffffff;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 42, 133, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(255, 42, 133, 0.6);
+        }
+
+        /* Wish reveal box */
+        .wish-reveal {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            color: #ffe57f;
+            font-size: 1.1rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        /* Letter Section */
+        .letter-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 45px 35px;
+            width: 100%;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .letter-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2rem;
+            color: #ff75c3;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .letter-content {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        .letter-content p {
+            margin-bottom: 18px;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.6rem;
+            color: var(--accent-gold);
+        }
+
+        /* Photo Memories Section - Polaroid Bento Wall */
+        .photos-section {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-heading {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff75c3, #ffa647);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .section-subheading {
+            color: var(--text-sub);
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin-bottom: 35px;
+        }
+
+        .bento-memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+            padding: 10px;
+        }
+
+        .polaroid-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 14px 14px 24px 14px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            transform: rotate(var(--rot, 0deg));
+        }
+
+        .polaroid-card:nth-child(1) { --rot: -2.5deg; }
+        .polaroid-card:nth-child(2) { --rot: 2deg; }
+        .polaroid-card:nth-child(3) { --rot: -1.5deg; }
+        .polaroid-card:nth-child(4) { --rot: 3deg; }
+
+        .polaroid-card:hover {
+            transform: translateY(-12px) rotate(0deg) scale(1.05);
+            z-index: 20;
+            box-shadow: 0 25px 45px rgba(255, 42, 133, 0.4);
+        }
+
+        .polaroid-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .polaroid-caption {
+            font-family: 'Pacifico', cursive;
+            color: #1e293b;
+            font-size: 1.15rem;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        /* Vault Unlock Box */
+        .vault-callout {
+            background: linear-gradient(135deg, rgba(255,42,133,0.15), rgba(157,78,221,0.15));
+            border: 1px dashed rgba(255, 42, 133, 0.4);
+            border-radius: 24px;
+            padding: 30px 20px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .vault-callout-text {
+            font-size: 1.1rem;
+            color: #f1f5f9;
+            font-weight: 300;
+        }
+
+        .btn-vault {
+            background: linear-gradient(135deg, #ff2a85, #9d4edd, #ffb703);
+            background-size: 200% 200%;
+            animation: gradientShift 4s ease infinite;
+            color: #ffffff;
+            border: none;
+            padding: 16px 36px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 42, 133, 0.5);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn-vault:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 18px 40px rgba(255, 42, 133, 0.7);
+        }
+
+        /* Floating Balloons background effect */
+        .balloon-container {
+            position: fixed;
+            bottom: -150px;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-balloon {
+            position: absolute;
+            width: 50px;
+            height: 65px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            opacity: 0.6;
+            animation: floatUp 14s linear infinite;
+        }
+
+        .floating-balloon::after {
             content: '';
             position: absolute;
-            bottom: -50px;
+            bottom: -20px;
             left: 50%;
-            width: 2px;
-            height: 50px;
-            background-color: #555;
+            width: 1px;
+            height: 20px;
+            background: rgba(255,255,255,0.4);
         }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+        }
+
         /* Keyframes */
-        @keyframes floatBalloons {
-            0% { top: 100%; }
-            100% { top: -200px; }
-        }
-        @keyframes sway {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
-        }
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        @keyframes bounceIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: clamp(2.2rem, 7vw, 3.2rem); }
+            .music-btn {
+                top: 12px;
+                right: 12px;
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            .interactive-card {
+                padding: 30px 18px;
+            }
+            .bento-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+            }
+            .letter-card {
+                padding: 30px 20px;
+            }
+            .letter-content {
+                font-size: 1.05rem;
+            }
+            .vault-callout {
+                padding: 30px 20px;
+            }
+            .btn-vault {
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                white-space: normal;
+                text-align: center;
+            }
         }
-        .cake-container {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        margin: 50px 0;
-    }
 
-    .cake {
-        width: 300px;
-    }
-
-    .candles {
-        position: absolute;
-        top: -50px;
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-    }
-
-    .candle {
-        width: 10px;
-        height: 60px;
-        background-color: #FFD700;
-        position: relative;
-    }
-
-    .candle::before {
-        content: '';
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 10px;
-        height: 20px;
-        background-color: #FFA500;
-        border-radius: 50%;
-        animation: flicker 0.2s infinite;
-    }
-
-    @keyframes flicker {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-    }
-
-    .blown-out .candle::before {
-        background-color: transparent;
-        animation: none;
-    }
-
-    #blowOutButton {
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 18px;
-        color: white;
-        background-color: #ff4081;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        animation: fadeInUp 2s ease-in-out;
-    }
-
-    #blowOutButton:hover {
-        background-color: #e91e63;
-    }
-    .message-section {
-        margin: 40px 0;
-        padding: 20px;
-        border: 2px solid #ff4081;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-    }
-
-    .message-section h2 {
-        font-family: 'Pacifico', cursive;
-        color: #ff4081;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    #messageForm {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-
-    #messageForm label {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        margin-bottom: 5px;
-    }
-
-    #messageForm input,
-    #messageForm textarea {
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-family: 'Roboto', sans-serif;
-        font-size: 14px;
-    }
-
-    #messageForm button {
-        padding: 10px;
-        font-size: 16px;
-        color: white;
-        background-color: #ff4081;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    #messageForm button:hover {
-        background-color: #e91e63;
-    }
-
-    #messageBoard h3 {
-        font-family: 'Pacifico', cursive;
-        color: #ff4081;
-        margin-bottom: 10px;
-    }
-
-    #messagesList {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    #messagesList li {
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        background-color: #fff3f8;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    #messagesList li span {
-        font-weight: bold;
-        color: #ff4081;
-    }
+        @media (max-width: 480px) {
+            body { padding: 30px 12px 60px 12px; }
+            .bento-grid {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+            }
+            .polaroid {
+                transform: rotate(0deg) !important;
+            }
+            .polaroid:hover {
+                transform: scale(1.03) !important;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <!-- birthday.html (add this below the existing code) -->
-    <div class="cake-container">
-        <img src="images/birthday_cake.png" alt="Birthday Cake" class="cake">
-        <div class="candles">
-            <div class="candle" id="candle1"></div>
-            <div class="candle" id="candle2"></div>
-            <div class="candle" id="candle3"></div>
+
+    <!-- Floating Background Balloons -->
+    <div class="balloon-container">
+        <div class="floating-balloon" style="left: 10%; background: #ff2a85; animation-delay: 0s;"></div>
+        <div class="floating-balloon" style="left: 25%; background: #9d4edd; animation-delay: 3s;"></div>
+        <div class="floating-balloon" style="left: 45%; background: #ffb703; animation-delay: 1.5s;"></div>
+        <div class="floating-balloon" style="left: 65%; background: #ff477e; animation-delay: 5s;"></div>
+        <div class="floating-balloon" style="left: 85%; background: #7209b7; animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Music Control Button -->
+    <button class="music-btn" id="musicToggleBtn" onclick="toggleAudio()">
+        <span id="musicIcon">🎵</span> <span id="musicText">Play Music</span>
+    </button>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header-section">
+            <span class="nickname-badge">For My Dearest Polu 💖</span>
+            <h1>Happy Birthday, Akanksha! 🎂</h1>
+            <p class="subtitle">To my favorite person, my rock, and my forever best friend ✨</p>
         </div>
+
+        <!-- Interactive Cake & Blow Candle Card -->
+        <div class="interactive-card">
+            <h2 style="font-family:'Pacifico', cursive; color:#ff75c3; font-size:2rem; margin-bottom:10px;">Make a Wish! 🕯️</h2>
+            <p style="color:#cbd5e1; font-weight:300; margin-bottom:20px;">Click below to blow out the candles and make a special birthday wish!</p>
+            
+            <div class="cake-wrapper" id="cakeWrapper">
+                <div class="candles-container">
+                    <div class="candle">
+                        <div class="candle-flame"></div>
+                        <div class="smoke"></div>
+                    </div>
+                    <div class="candle">
+                        <div class="candle-flame"></div>
+                        <div class="smoke"></div>
+                    </div>
+                    <div class="candle">
+                        <div class="candle-flame"></div>
+                        <div class="smoke"></div>
+                    </div>
+                </div>
+                <img src="images/birthday_cake.png" alt="Birthday Cake" class="cake-img">
+            </div>
+
+            <div>
+                <button class="btn-action" id="blowBtn" onclick="blowOutCandles()">
+                    Blow Out Candles 💨✨
+                </button>
+            </div>
+
+            <div class="wish-reveal" id="wishReveal">
+                🌟 "May all your secret wishes come true today and always! You deserve the world, Polu!" 🌟
+            </div>
+        </div>
+
+        <!-- Heartfelt Letter Card -->
+        <div class="letter-card">
+            <div class="letter-title">A Message From Saidye 💌</div>
+            <div class="letter-content">
+                <p>Dear Polu,</p>
+                
+                <p>Happy Birthday! 🎉✨ On your special day, I wanted to take a quiet moment to remind you just how deeply irreplaceable you are to me. You aren't just my best friend — you are my comfort place, my biggest cheerleader, and the person who can bring a genuine smile to my face even on the hardest of days.</p>
+                
+                <p>From all our crazy laughter and endless inside jokes to the silent moments of understanding, every memory with you is something I hold extremely close to my heart. You have this incredible warmth and light inside you that makes everything brighter for everyone around you — especially for me.</p>
+                
+                <p>I might not always find the perfect words to tell you how much you truly mean to me, but please know that having you in my life is one of my greatest blessings. I promise to always be right here for you — to listen, to laugh with you, and to stand by you through every single step of this journey.</p>
+                
+                <p>May this coming year bring you boundless happiness, peace, success, and every single dream your heart desires. Keep shining, Polu!</p>
+            </div>
+            <div class="signature">With all my love & warmth,<br>Saidye (Sahil) 🌟</div>
+        </div>
+
+        <!-- Photo Memories Section -->
+        <div class="photos-section">
+            <div class="section-heading">Our Memory Vault 📸💖</div>
+            <p class="section-subheading">A glimpse into the unforgettable moments & pure smiles we've built together ✨</p>
+            
+            <div class="bento-memory-grid">
+                <div class="polaroid-card">
+                    <img src="images/ak/im1.jpg" alt="Memory 1">
+                    <div class="polaroid-caption">Pure Joy 🌸</div>
+                </div>
+                <div class="polaroid-card">
+                    <img src="images/ak/im2.jpg" alt="Memory 2">
+                    <div class="polaroid-caption">Laughter & Vibes ⚡</div>
+                </div>
+                <div class="polaroid-card">
+                    <img src="images/ak/im18.jpg" alt="Memory 3">
+                    <div class="polaroid-caption">Unfiltered Smiles 💫</div>
+                </div>
+                <div class="polaroid-card">
+                    <img src="images/ak/im6.jpg" alt="Memory 4">
+                    <div class="polaroid-caption">Forever Moments 💖</div>
+                </div>
+            </div>
+
+            <div class="vault-callout">
+                <div class="vault-callout-text">Ready to relive all 30+ special memories together?</div>
+                <button class="btn-vault" onclick="location.href='slidshow1.html'">
+                    Unlock The Full Memory Vault 🔓✨
+                </button>
+            </div>
+        </div>
+
     </div>
-    <button id="blowOutButton" onclick="blowOutCandles()">Blow Out the Candles</button>
 
-    <div class="balloons">
-        <div class="balloon" style="background-color: #ff5252;"></div>
-        <div class="balloon" style="background-color: #ff1744;"></div>
-        <div class="balloon" style="background-color: #d500f9;"></div>
-    </div>
-
-    <h1>Happy Birthday, Akanksha!</h1>
-
-    <p class="message">
-        Happy Birthday, Akanksha 🎉✨,
-        <br><br>
-        On your special day, I just want to remind you how much you mean to me. You are more than a friend; you're my confidante, and someone I can always count on. Through all the ups and downs, you've been my rock, my biggest supporter, and my constant source of joy and laughter. I feel so blessed to have you in my life. 💖
-        <br><br>
-        May this year bring you endless happiness, love, and all the amazing things you deserve. I can't wait to make more beautiful memories with you and continue this incredible journey of friendship. Here's to another year of adventures, laughter, and always being there for each other. 🎂🌟
-        <br>
-        With love,
-        <br>
-        Sahil
-    </p>
-
-    <div class="photos">
-        <img src="images/ak/im1.jpg" alt="Memory 1">
-        <img src="images/ak/im2.jpg" alt="Memory 2">
-        <img src="images/ak/im18.jpg" alt="Memory 3">
-    </div>
-    <button onclick="location.href='slidshow1.html'">more memory</button>
-
-    <div class="gif">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMG10MGhhamJoMG4weWYwYWs1bWtnaGd4b3NsZG5yMmFvNnluOTd0dCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/LzwcNOrbA3aYvXK6r7/giphy.gif" alt="Celebration GIF">
-    </div>
-    <div id="userMessage"></div>
-    
-    <!-- Birthday Song -->
+    <!-- Audio Element -->
     <audio id="birthday-audio" loop>
         <source src="audio/birthday.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    
+
     <script>
+        const audio = document.getElementById('birthday-audio');
+        const musicBtn = document.getElementById('musicToggleBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicIcon.innerText = "🔊";
+                    musicText.innerText = "Pause Music";
+                }).catch(err => {
+                    console.log("Audio play blocked", err);
+                });
+            } else {
+                audio.pause();
+                musicIcon.innerText = "🎵";
+                musicText.innerText = "Play Music";
+            }
+        }
+
+        // Try playing on first user click anywhere on page
+        document.body.addEventListener('click', function autoPlayOnce() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicIcon.innerText = "🔊";
+                    musicText.innerText = "Pause Music";
+                }).catch(() => {});
+            }
+            document.body.removeEventListener('click', autoPlayOnce);
+        });
+
+        // Blow out candles function
+        let blown = false;
         function blowOutCandles() {
-            const candles = document.querySelectorAll('.candle');
-            candles.forEach(candle => {
-                candle.classList.add('blown-out');
-            });
-    
-            // Optional: Add confetti effect
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-    
-            // Play a sound effect (optional)
-            let audio = new Audio('audio/blow_out.mp3');
-            audio.play();
-        }
-        // Retrieve the values from local storage
-        const name = localStorage.getItem('birthdayName');
-        const message = localStorage.getItem('birthdayMessage');
+            if (blown) return;
+            blown = true;
 
-        // Display the message if present
-        if (name && message) {
-            const userMessageDiv = document.getElementById('userMessage');
-            userMessageDiv.innerHTML = `<h2>Message from ${name}:</h2><p>${message}</p>`;
-        }
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const audio = document.querySelector('audio');
-            audio.play().catch(error => {
-                console.log('Autoplay was prevented. User interaction is needed to play the audio.');
-            });
-        });
-        window.addEventListener('DOMContentLoaded', (event) => {
-            document.body.addEventListener('click', playAudio);
-        });
-        // Define the playAudio function first
-        function playAudio() {
-            const audio = document.getElementById('birthday-audio');
-            audio.play().catch(error => {
-                console.log('Autoplay was prevented. User interaction is needed to play the audio.');
-            });
-        }
+            const cakeWrapper = document.getElementById('cakeWrapper');
+            cakeWrapper.classList.add('blown-out');
 
-        // Add event listener after DOM is fully loaded
-        window.addEventListener('DOMContentLoaded', (event) => {
-            document.body.addEventListener('click', playAudio);
-        });
+            document.getElementById('blowBtn').innerText = "Candles Blown Out! 🥳";
+            document.getElementById('blowBtn').style.opacity = "0.7";
+            document.getElementById('wishReveal').style.display = "block";
+
+            // Launch Confetti Burst
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 } 
+                }));
+            }, 250);
+        }
     </script>
 
 </body>
 </html>
+
