@@ -32,10 +32,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fallback if API not available
     if (!imageList || imageList.length === 0) {
         imageList = [];
-        for (let i = 1; i <= 31; i++) {
-            imageList.push(`images/ak/im${i}.jpg`);
+        for (let i = 1; i <= 20; i++) {
+            imageList.push(`images/polu/photo_${i}.jpg`);
         }
     }
+
 
     const totalPhotos = imageList.length;
     const cards = [];
