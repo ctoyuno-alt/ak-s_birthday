@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polu-birthday-deployment
+  namespace: default
+  labels:
+    app: polu-birthday
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: polu-birthday
+  template:
+    metadata:
+      labels:
+        app: polu-birthday
+    spec:
+      containers:
+      - name: polu-birthday-container
+        image: polu-birthday:latest # Replace with your image registry (e.g. docker.io/username/polu-birthday:v1)
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polu-birthday-service
+  namespace: default
+  labels:
+    app: polu-birthday
+spec:
+  type: ClusterIP # Or NodePort / LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: polu-birthday
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: polu-birthday-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod" # Uncomment if using cert-manager for free SSL
+spec:
+  # tls:
+  # - hosts:
+  #   - polu.yourdomain.com
+  #   secretName: polu-birthday-tls
+  rules:
+  - host: polu.yourdomain.com # Replace with your domain name
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: polu-birthday-service
+            port:
+              number: 80

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polu-birthday
+  namespace: default
+  labels:
+    app: polu-birthday
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polu-birthday
+  template:
+    metadata:
+      labels:
+        app: polu-birthday
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polu-birthday-service
+  namespace: default
+  labels:
+    app: polu-birthday
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30800
+    protocol: TCP
+    name: http
+  selector:
+    app: polu-birthday
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: polu-birthday-ingress
+  namespace: default
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: polu-birthday-service
+            port:
+              number: 80
